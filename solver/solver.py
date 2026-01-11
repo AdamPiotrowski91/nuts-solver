@@ -179,7 +179,9 @@ class BoardMoveLog:
     def display_steps(self) -> None:
         for entry in self.entries:
             print(
-                f"Pole<index={entry.source._index}, lvl={len(entry.source.nuts)-1}>",
+                f"Move[{entry.source._index} -> {entry.target._index}]",
+                f"| Coords[{entry.source._index}][{len(entry.source.nuts)-1}]",
+                f"| Pole<index={entry.source._index}, lvl={len(entry.source.nuts)-1}>",
                 "->",
                 f"Pole<index={entry.target._index}>",
             )
@@ -218,7 +220,12 @@ class Board:
                         continue
 
                     if target_pole.can_receive_payload(checked_payload):
-                        yield source_pole, target_pole
+                        move_has_value = not (
+                            source_pole.count_colors() == 1 and target_pole.is_empty()
+                        )
+
+                        if move_has_value:
+                            yield source_pole, target_pole
 
     def apply_move(self, source: Pole, target: Pole) -> None:
         payload = source.get_payload()
@@ -270,6 +277,9 @@ class Solver:
                     if state not in seen_states:
                         seen_states.add(state)
                         layer()
+
+                    if self.board.is_solved():
+                        return
 
                     self.board.reverse_move()
 
