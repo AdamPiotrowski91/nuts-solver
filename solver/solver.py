@@ -44,6 +44,8 @@ class Nut:
     required: bool = field(default=False, init=False, repr=False, hash=False)
 
     def __post_init__(self, *args, **kwargs):
+        assert self._color is None or " " not in self._color
+
         if self._color == "X":
             self._color = None
 
