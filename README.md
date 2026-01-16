@@ -22,3 +22,4 @@ This solver simplifies the solve as you can interactively provide updates to wha
 - take into consideration that once revealed, a color will be always grabbed after backtrack even if, when played from scratch, it wouldn't due to being unknown - non-issue for now
 - recognize preferred move, maybe?
 - justify steps text in STDOUT
+- add `entry.json` "populater"

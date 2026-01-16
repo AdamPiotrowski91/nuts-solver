@@ -194,12 +194,14 @@ class Board:
     poles: list[Pole]
     log: BoardMoveLog = field(
         default=None, init=False, repr=False, hash=False
-    )  # type: ignore # NOSONAR
+    )  # type: ignore # NOSONAR # will be populater in post_init
 
     def __post_init__(self, *args, **kwargs):
         self.log = BoardMoveLog([])
         for i, p in enumerate(self.poles):
             p._index = i
+
+        assert isinstance(self.log, BoardMoveLog)
 
     def get_id(self) -> str:
         return "@".join(p.get_id() for p in self.poles)
